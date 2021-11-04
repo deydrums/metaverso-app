@@ -6,10 +6,22 @@
  * */ 
 
 const {Router} = require('express');
+const { check } = require('express-validator');
+const { paramsValidator } = require('../middlewares/params-validator');
 const router = Router();
 const { register } = require('../controllers/AuthController');
 
- 
-router.post('/register',register);
+/********************************Registro de Usuarios ***********/
+
+router.post(
+    '/register',
+    [
+        check('name', 'El nombre no es valido').not().isEmpty(),
+        check('email', 'El email no es valido').isEmail(),
+        check('password', 'El password debe de ser de 6 caracteres').isLength({min: 6}), 
+        paramsValidator
+    ],
+    register
+    );
 
 module.exports = router;
