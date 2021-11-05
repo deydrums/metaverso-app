@@ -13,7 +13,7 @@ const register = async(req,res = response)=>{
 
         //Buscar si existe el usuario con el email indicado.
 
-        const sql_search = `SELECT name, email, dpi, image, tel  FROM users WHERE email = '${req.body.email}'`
+        const sql_search = `SELECT id, name, email, dpi, image, tel  FROM users WHERE email = '${req.body.email}'`
         await connection.query(sql_search, async (err, result) => {
             if(err){
                 res.status(400).json({
@@ -86,7 +86,7 @@ const register = async(req,res = response)=>{
 
 const login = async(req,res = response)=>{
     const {email, password} = req.body
-    const sql_search = `SELECT name, email, dpi, image, tel, password  FROM users WHERE email = '${email}'`
+    const sql_search = `SELECT id, name, email, dpi, image, tel, password  FROM users WHERE email = '${email}'`
 
     try {
 
@@ -136,7 +136,40 @@ const login = async(req,res = response)=>{
     }
 }
 
+/********************************Renew Token ***** **************/
+const renew = async(req,res = response)=>{
+    const uid = req.uid;
+    const name = req.name;
+    const sql_search = `SELECT id, name, email, dpi, image, tel  FROM users WHERE id = '${uid}'`
+    try {
+        //Generar Token de autenticacion
+        const token = await generateJWT(uid, name);
+
+        await connection.query(sql_search, async (err, result) => {
+            if(err){
+                res.status(400).json({
+                    ok: false,
+                    message: 'Ha ocurrido un error'
+                });
+            }else{
+                res.status(201).json({
+                    ok: true,
+                    message: 'Nuevo token generado',
+                    data: result[0],
+                    token
+                });
+            }
+        });
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            message: 'Ha ocurrido un error, intenta de nuevo'
+        })
+    }
+}
+
 module.exports = {
     register,
-    login
+    login,
+    renew
 };
