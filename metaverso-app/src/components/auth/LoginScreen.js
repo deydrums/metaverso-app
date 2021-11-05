@@ -67,13 +67,14 @@ export const LoginScreen = () => {
                 />
                 <button
                     type="submit"
-                    className = "btn-auth"
+                    className = "btn btn-auth"
                     disabled={fetch}
                 >
                     {
-                        fetch?<h3>Entrando</h3>:<span>Entrar</span>
+                        fetch? <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>:<span>Entrar</span>
                     }
                 </button>
+
 
 
                 <h3 className="auth__text m-2">¿No tienes una cuenta?</h3>

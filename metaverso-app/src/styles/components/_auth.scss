@@ -75,17 +75,12 @@
 }
 
 .btn-auth{
-    border: none;
     color: $white;
-    cursor:pointer;
     font-size:15px;
     width:100%;
-    padding: 10px 10px 10px 10px;
     text-decoration: none;
     transition: all 0.3s ease;
     background-color: $primary;
-    border-radius: 2px;
-    text-align: center;
     &:disabled{
         background-color: lighten($color: $primary, $amount: 15)
     }
