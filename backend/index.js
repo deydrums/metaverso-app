@@ -25,6 +25,7 @@ app.use(express.urlencoded({extended:true}));
 
 //Rutas
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/user', require('./routes/user'));
 
 //Iniciar Servidor
 app.listen(process.env.PORT ,()=>{
