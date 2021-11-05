@@ -10,4 +10,7 @@ export const types = {
 
     uiSetFetch: '[UI] Set Fetch',
     uiRemoveFetch: '[UI] Remove Fetch',
+
+    userLoadingUsers: '[user] Loading users',
+    userUnSetUsers: '[user] UnSet users',
 }
