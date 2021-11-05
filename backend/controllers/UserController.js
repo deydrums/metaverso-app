@@ -11,7 +11,7 @@ const getUsers = async(req,res = response)=>{
             if(err) {return res.status(401).json({ok:false, message: err.message})};
             if(result.length > 0){
                 result.map(user => {
-                    console.log(delete user.password);
+                    delete user.password;
                 })
             }
             return res.status(200).json({ok:true, data: result})

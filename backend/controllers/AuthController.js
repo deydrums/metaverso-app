@@ -26,7 +26,8 @@ const register = async(req,res = response)=>{
                 const sql = `INSERT INTO users SET ?`
                 const user = {
                     name: req.body.name,
-                    email: req.body.email
+                    email: req.body.email,
+                    created_at: new Date()
                 }
                 //Encriptar contraseña
                 const salt = bcrypt.genSaltSync();
@@ -167,7 +168,8 @@ const update = async(req,res = response)=>{
             dpi: req.body.dpi,
             tel: req.body.tel,
             birthday: req.body.birthday,
-            gender: req.body.gender
+            gender: req.body.gender,
+            updated_at: new Date()
         }
 
         //Comprobar que el nuevo correo no pertenezca a otro usuario
@@ -217,7 +219,8 @@ const upload = async(req,res = response)=>{
     const sql = `UPDATE users SET ? WHERE id = '${uid}'`;
     try {
         const data = {
-            image: `${req.file.file_name}`
+            image: `${req.file.file_name}`,
+            updated_at: new Date()
         }
 
         await connection.query(sql_search, async (err, result) => {
