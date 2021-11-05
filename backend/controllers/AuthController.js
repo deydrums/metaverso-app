@@ -149,7 +149,7 @@ const renew = async(req,res = response)=>{
 }
 
 
-/********************************Registro de Usuarios ***********/
+/********************************Update  de Usuarios ***********/
 
 const update = async(req,res = response)=>{
     const {uid, name} = req;
@@ -176,8 +176,6 @@ const update = async(req,res = response)=>{
             });
 
         });
-
-
 
     } catch (error) {
         res.status(500).json({
