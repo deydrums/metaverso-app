@@ -26,9 +26,6 @@ export const AsideScreen = () => {
           })
     }
 
-
-
-    console.log(`${BackUrl}/auth/image/${image}`)
     return (
         <aside className="__p-aside">
             <div className="__aside-usrprofile">

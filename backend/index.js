@@ -11,11 +11,12 @@ const app = express();
 //DDBB
 dbConnection();
 
+//Configurar cors
+app.use(cors());
+
 //Directorio publico
 app.use(express.static('public'));
 
-//Configurar cors
-app.use(cors());
 
 //Lectura y parseo del body
 app.use(express.json());

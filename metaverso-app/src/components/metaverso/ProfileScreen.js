@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeError, setError } from '../../actions/ui';
 import { useForm } from '../../hooks/useForm';
 import validator from 'validator';
+import { startUpdate } from '../../actions/auth';
 
 const BackUrl = process.env.REACT_APP_API_URL;
 
@@ -34,7 +35,7 @@ export const ProfileScreen = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isFormValid()){
-            console.log(formValues)
+            dispatch(startUpdate(formValues));
         }
     }
 

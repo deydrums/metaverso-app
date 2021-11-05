@@ -38,7 +38,7 @@ const fetchWithToken = (endpoint, data, method = 'GET') => {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'token': `${token}`
             },
             body: JSON.stringify(data)
         });
@@ -54,7 +54,7 @@ const fileUpload = async(endpoint, file, method = 'POST') =>{
     return fetch  (url, {
         method: method,
         headers: {
-            'Authorization': `Bearer ${token}`,
+            'token': `${token}`,
             'Accept': 'application/json',
         },
         body: formData

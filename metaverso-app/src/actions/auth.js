@@ -81,3 +81,20 @@ const logout = () => ({
     type: types.authLogout
 });
 
+//update user ________________________________________________________________________
+
+export const startUpdate = (values) => {
+    return async(dispatch) => {
+        dispatch(startFetch());
+        const resp = await fetchWithToken('auth/update',values,'PUT');
+        const body = await resp.json();
+        dispatch(finishFetch());
+        if(resp.ok) {
+            dispatch(setUser(body.data));
+            Swal.fire('Hecho',body.message,'success');
+        }else{
+            Swal.fire('Error',body.message,'error');
+        }
+    }
+}
+

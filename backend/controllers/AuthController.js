@@ -191,7 +191,7 @@ const update = async(req,res = response)=>{
                     res.status(200).json({
                         ok: true,
                         message: 'Usuario actualizado con exito',
-                        data: result
+                        data: result[0]
                     })
                 });
 
