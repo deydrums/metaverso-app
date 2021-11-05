@@ -1,0 +1,123 @@
+
+.__aside-usrprofile{
+    background-color: $primary;
+    height:120px;
+    width: 100%;
+    display: flex;
+}
+
+.__aside-userphoto{
+    height:100%;
+    width: 30%;
+    display: flex;
+    justify-content:center;
+    align-items:center;
+}
+
+
+.__aside-userdesc{
+    height:100%;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-family: 'poppins', sans-serif;
+
+    h3{
+        font-size: 19px;
+        margin-left: 7px !important;
+        color: $light-blue;
+        width: 100%;  
+    }
+
+    a{
+        color: $light-blue;
+        text-decoration: none;
+        font-weight: 300 !important;
+
+        &:hover{
+            color:darken($color: $light-blue, $amount: 20);
+        }
+    }
+
+
+    .__aside-buttonlogout{
+        width:100%;
+        height: 30%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        font-weight: 300 !important;
+
+        .btn{
+            color:darken($color: $white, $amount: 10);
+            &:hover{
+                color:darken($color: $white, $amount: 20);
+            }
+        }
+    }
+
+
+}
+
+
+.__aside-options {
+
+    margin: 10px;
+    overflow: auto;
+ 
+    &::-webkit-scrollbar {
+        -webkit-appearance: none;
+        background-color: #ccc;
+    }
+ 
+    &::-webkit-scrollbar:vertical {
+        width: 8px;
+    }
+ 
+    &::-webkit-scrollbar:horizontal {
+        height: 10px;
+    }
+ 
+    &::-webkit-scrollbar-thumb {
+        background-color: $primary;
+        border-radius: 20px;
+    }
+}
+
+.__aside-option{
+    width:100%;
+    height: 60px;
+    background-color: darken($color: $light-grey, $amount: 60);
+    border-radius: 10px;
+    transition: all .3s ease-in-out;
+    display: flex;
+    flex-direction: row;
+    color: $white;
+    text-decoration: none;
+    &:hover{
+        background-color: darken($color: $light-grey, $amount: 55);
+        color: darken($color: $white, $amount: 10);
+    }
+}
+
+.__aside-opcion--active{
+    background-color: transparentize($color: $primary, $amount: 0.7);
+}
+
+.__aside-option_icon{
+    height:100%;
+    width: 30%;
+    display: flex;
+    justify-content:center;
+    align-items: center; 
+    font-size: 30px;
+}
+
+.__aside-option_text{
+    height:100%;
+    width: 70%;
+    display: flex;
+    justify-content:flex-start;
+    align-items: center;    
+}

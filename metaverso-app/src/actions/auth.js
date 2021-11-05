@@ -68,5 +68,16 @@ const checkingFinish = () => ({
     type: types.authCheckingFinish
 });
 
+//Logout ___________________________________________________________________________
 
+export const startLogout = () => {
+    return async(dispatch) => {
+        localStorage.clear();
+        dispatch(logout());
+    }
+};
+
+const logout = () => ({
+    type: types.authLogout
+});
 
