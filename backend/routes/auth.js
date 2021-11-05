@@ -9,7 +9,7 @@ const {Router} = require('express');
 const { check } = require('express-validator');
 const { paramsValidator } = require('../middlewares/params-validator');
 const router = Router();
-const { register, login, renew } = require('../controllers/AuthController');
+const { register, login, renew, update } = require('../controllers/AuthController');
 const { validateJWT } = require('../middlewares/validate-jwt');
 
 /********************************Registro de Usuarios ***********/
@@ -40,6 +40,21 @@ router.post(
 /********************************Renew Token ********************/
 
 router.get('/renew', validateJWT, renew);
+
+
+
+/********************************Update  de Usuarios ***********/
+
+router.put(
+    '/update',
+    [
+        validateJWT,
+        check('name', 'El nombre no es valido').not().isEmpty(),
+        check('email', 'El email no es valido').isEmail(),
+        paramsValidator
+    ],
+    update
+);
 
 
 module.exports = router;

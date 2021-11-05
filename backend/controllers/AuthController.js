@@ -10,67 +10,47 @@ const { generateJWT } = require('../helpers/jwt');
 
 const register = async(req,res = response)=>{
     try {
-
         //Buscar si existe el usuario con el email indicado.
 
         const sql_search = `SELECT id, name, email, dpi, image, tel  FROM users WHERE email = '${req.body.email}'`
         await connection.query(sql_search, async (err, result) => {
-            if(err){
+            if(err) {return res.status(401).json({ok:false, message: err.message})};
+            if(result.length != 0){
                 res.status(400).json({
-                    ok: false,
-                    message: 'Ha ocurrido un error'
+                    ok: true,
+                    message: 'El email ya ha sido registrado anteriormente'
                 });
             }else{
-                if(result.length != 0){
-                    res.status(400).json({
-                        ok: true,
-                        message: 'El email ya ha sido registrado anteriormente'
-                    });
-                }else{
-                    //Si no existe el usuario, se procede al registro.
-
-                    const sql = `INSERT INTO users SET ?`
-                    const user = {
-                        name: req.body.name,
-                        email: req.body.email
-                    }
-
-                    //Encriptar contraseña
-                    const salt = bcrypt.genSaltSync();
-                    user.password = bcrypt.hashSync(req.body.password,salt);
-
-                    //Generar Token de autenticacion
-                    const token = await generateJWT(user.id, user.name);
-
-                    //Crear usuario en la base de datos
-                    await connection.query(sql, user, async (err) => {
-                        if(err){
-                            res.status(400).json({
-                                ok: false,
-                                message: 'Ha ocurrido un error'
-                            });
-                        }else{
-                            await connection.query(sql_search, async (err, result) => {
-                                if(err){
-                                    res.status(400).json({
-                                        ok: false,
-                                        message: 'Ha ocurrido un error'
-                                    });
-                                }else{
-                                        res.status(201).json({
-                                            ok: true,
-                                            message: 'Registro de usuario exitoso',
-                                            data: result[0],
-                                            token
-                                        });
-                                    }
-                                });
-
-                        };
-                    })
+                //Si no existe el usuario, se procede al registro.
+                const sql = `INSERT INTO users SET ?`
+                const user = {
+                    name: req.body.name,
+                    email: req.body.email
                 }
+                //Encriptar contraseña
+                const salt = bcrypt.genSaltSync();
+                user.password = bcrypt.hashSync(req.body.password,salt);
+
+                //Crear usuario en la base de datos
+                await connection.query(sql, user, async (err) => {
+                    if(err) {return res.status(401).json({ok:false, message: err.message})};
+
+                    await connection.query(sql_search, async (err, result) => {
+                        if(err) {return res.status(401).json({ok:false, message: err.message})};
+                            
+                        //Generar Token de autenticacion
+                        const token = await generateJWT(result[0].id, result[0].name);
+                                
+                        res.status(201).json({
+                            ok: true,
+                            message: 'Registro de usuario exitoso',
+                            data: result[0],
+                            token
+                        });
+                    });
+                });
             };
-        })
+        });
 
 
     } catch (error) {
@@ -168,8 +148,49 @@ const renew = async(req,res = response)=>{
     }
 }
 
+
+/********************************Registro de Usuarios ***********/
+
+const update = async(req,res = response)=>{
+    const {uid, name} = req;
+    const sql_search = `SELECT id, name, email, dpi, image, tel  FROM users WHERE id = '${uid}'`
+    const sql = `UPDATE users SET ? WHERE id = '${uid}'`;
+    try {
+        const user = {
+            name: req.body.name,
+            email: req.body.email,
+            dpi: req.body.dpi,
+            tel: req.body.tel
+        }
+
+        await connection.query(sql, user, async (err) => {
+            if(err) {return res.status(401).json({ok:false, message: err.message})};
+            
+            await connection.query(sql_search, user, async (err, result) => {
+                if(err) {return res.status(401).json({ok:false, message: err.message})};
+                res.status(200).json({
+                    ok: true,
+                    message: 'Usuario actualizado con exito',
+                    data: result
+                })
+            });
+
+        });
+
+
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            message: 'Ha ocurrido un error, intenta de nuevo'
+        })
+    }
+}
+
+
 module.exports = {
     register,
     login,
-    renew
+    renew,
+    update
 };
