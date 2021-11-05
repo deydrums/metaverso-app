@@ -5,7 +5,7 @@ CREATE TABLE users(
 id              int(255) auto_increment not null,
 name            varchar(50) NOT NULL,
 dpi             varchar(100),
-image           varchar(20),
+image           text,
 tel             varchar(255),
 email           varchar(255) NOT NULL,
 password        text NOT NULL,

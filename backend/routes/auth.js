@@ -9,8 +9,11 @@ const {Router} = require('express');
 const { check } = require('express-validator');
 const { paramsValidator } = require('../middlewares/params-validator');
 const router = Router();
-const { register, login, renew, update } = require('../controllers/AuthController');
+const { register, login, renew, update, upload } = require('../controllers/AuthController');
 const { validateJWT } = require('../middlewares/validate-jwt');
+const multipart = require('connect-multiparty');
+const { filedata } = require('../middlewares/filedata');
+const md_upload = multipart({ uploadDir:'./uploads/users'})
 
 /********************************Registro de Usuarios ***********/
 
@@ -54,6 +57,18 @@ router.put(
         paramsValidator
     ],
     update
+);
+
+/********************************Upload Imagen *****************/
+
+router.post(
+    '/upload', 
+    [
+        validateJWT,
+        md_upload, 
+        filedata
+    ], 
+    upload
 );
 
 

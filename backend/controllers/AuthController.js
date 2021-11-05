@@ -4,7 +4,8 @@ const {response} = require('express');
 const { connection } = require('../database/config');
 var bcrypt = require('bcryptjs');
 const { generateJWT } = require('../helpers/jwt');
-
+const fs = require('fs');
+const path = require('path');
 
 /********************************Registro de Usuarios ***********/
 
@@ -199,10 +200,67 @@ const update = async(req,res = response)=>{
     }
 }
 
+/********************************Upload Imagen *****************/
+
+const upload = async(req,res = response)=>{
+    const {uid} = req;
+    const sql_search = `SELECT id, name, email, dpi, image, tel  FROM users WHERE id = '${uid}'`
+    const sql = `UPDATE users SET ? WHERE id = '${uid}'`;
+    try {
+        const data = {
+            image: `${req.file.file_name}`
+        }
+
+        await connection.query(sql_search, async (err, result) => {
+            if(err) {
+                if(req.file.file_path){fs.unlinkSync(req.file.file_path)}
+                return res.status(401).json({ok:false, message: err.message})
+            };
+
+            if(result.length == 0){
+                res.status(404).json({
+                    ok: false,
+                    message: 'El usuario no existe',
+                });
+            }else{
+                const userimage = result[0].image;
+                if(req.file.file_path){
+                    if(req.file.file_ext != 'png' && req.file.file_ext != 'jpg' && req.file.file_ext != 'jpeg' && req.file.file_ext != 'webp'){
+                        if(req.file.file_path){fs.unlinkSync(req.file.file_path)}
+                    }else{
+                        if(userimage !== null && userimage !== 'null' && userimage !== undefined && userimage !== 'undefined'){
+                            fs.unlinkSync('uploads/users/'+userimage)
+                        }
+                        await connection.query(sql,data, async (err, result) => {
+                            if(err) {
+                                if(req.file.file_path){fs.unlinkSync(req.file.file_path)}
+                                return res.status(401).json({ok:false, message: err.message})
+                            };
+                            res.status(201).json({
+                                ok: true,
+                                message: 'Imagen subida con exito',
+                                data  
+                            })
+                        });
+                        
+                    }
+                }
+
+            }
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            message: 'Ha ocurrido un error, intenta de nuevo'
+        })
+    }
+}
 
 module.exports = {
     register,
     login,
     renew,
-    update
+    update,
+    upload
 };
