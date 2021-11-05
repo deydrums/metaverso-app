@@ -1,7 +1,7 @@
 //******************* Auth Actions ******************* */
 
 import { types } from "../types/types";
-import { fetchWithoutToken, fetchWithToken } from "../helpers/fetch";
+import { fetchWithoutToken, fetchWithToken, fileUpload } from "../helpers/fetch";
 import { finishFetch, startFetch } from "./ui";
 import Swal from 'sweetalert2';
 
@@ -98,3 +98,33 @@ export const startUpdate = (values) => {
     }
 }
 
+//upload image user ________________________________________________________________________
+
+export const startUpload = (file) => {
+    return async(dispatch) => {
+        dispatch(startFetch());
+        Swal.fire({ 
+            title: 'Cargando...',
+            text: 'Espere mientras se carga el archivo,',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+        const resp = await fileUpload('auth/upload',file,'POST');
+        const body = await resp.json();
+        dispatch(finishFetch());
+        Swal.close();
+        if(resp.ok) {
+            dispatch(setUser(body.data));
+            Swal.fire('Hecho',body.message,'success');
+        }else{
+            if(body.errors.file){
+                Swal.fire('Error',body.errors.file[0],'error');
+            }else{
+                Swal.fire('Error',body.message?body.message:'Ha ocurrido un error','error');
+            }
+        }
+
+    }
+}

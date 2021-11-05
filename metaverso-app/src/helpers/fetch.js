@@ -50,7 +50,7 @@ const fileUpload = async(endpoint, file, method = 'POST') =>{
     const url = `${baseUrl}/${endpoint}`;
     const token = localStorage.getItem('token') || '';
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('image', file);
     return fetch  (url, {
         method: method,
         headers: {

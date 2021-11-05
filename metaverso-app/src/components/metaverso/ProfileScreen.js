@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeError, setError } from '../../actions/ui';
 import { useForm } from '../../hooks/useForm';
 import validator from 'validator';
-import { startUpdate } from '../../actions/auth';
+import { startUpdate, startUpload } from '../../actions/auth';
 
 const BackUrl = process.env.REACT_APP_API_URL;
 
@@ -55,7 +55,7 @@ export const ProfileScreen = () => {
     const handleFileChange = (e) => {
         const file = e.target.files;
         if(file){
-            console.log(file)
+            dispatch(startUpload(file[0]))
         }
     }
 
