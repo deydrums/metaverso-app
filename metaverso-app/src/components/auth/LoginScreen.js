@@ -71,7 +71,7 @@ export const LoginScreen = () => {
                     disabled={fetch}
                 >
                     {
-                        fetch? <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>:<span>Entrar</span>
+                        fetch? <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>:<span>Entrar</span>
                     }
                 </button>
 

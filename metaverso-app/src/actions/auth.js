@@ -28,6 +28,27 @@ const setUser = (user) => ({
     payload: user
 });
 
+//register ___________________________________________________________________________
+
+export const startRegister = (name, email, password) => {
+    return async(dispatch) => {
+        dispatch(startFetch());
+        const resp = await fetchWithoutToken('auth/register',{name,email,password},'POST');
+        const body = await resp.json();
+        dispatch(finishFetch());
+        if(resp.ok) {
+            localStorage.setItem('token',body.token);
+            dispatch(setUser(body.data));
+        }else{
+            if(body.errors){
+                Swal.fire('Error',body.errors.email[0],'error');
+            }else{
+                Swal.fire('Error',body.message?body.message:'Ha ocurrido un error','error');
+            }
+        }
+    }
+}
+
 //Checking token ___________________________________________________________________________
 
 export const startChecking = () => {

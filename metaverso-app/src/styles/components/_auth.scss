@@ -93,3 +93,14 @@
         outline: none;
     }
 }
+
+@media only screen and (max-width: 600px) {
+    .auth__box-container{
+        border-radius: 20px;
+        width: 80vw;
+    }
+    .auth__input{
+        margin-bottom:15px;
+        height: 35px;
+    }
+  }
