@@ -13,7 +13,7 @@ const register = async(req,res = response)=>{
     try {
         //Buscar si existe el usuario con el email indicado.
 
-        const sql_search = `SELECT id, name, email, dpi, image, tel  FROM users WHERE email = '${req.body.email}'`
+        const sql_search = `SELECT * FROM users WHERE email = '${req.body.email}'`
         await connection.query(sql_search, async (err, result) => {
             if(err) {return res.status(401).json({ok:false, message: err.message})};
             if(result.length != 0){
@@ -41,7 +41,8 @@ const register = async(req,res = response)=>{
                             
                         //Generar Token de autenticacion
                         const token = await generateJWT(result[0].id, result[0].name, result[0].email);
-                                
+
+                        delete result[0].password;
                         res.status(201).json({
                             ok: true,
                             message: 'Registro de usuario exitoso',
@@ -67,7 +68,7 @@ const register = async(req,res = response)=>{
 
 const login = async(req,res = response)=>{
     const {email, password} = req.body
-    const sql_search = `SELECT id, name, email, dpi, image, tel, password  FROM users WHERE email = '${email}'`
+    const sql_search = `SELECT * FROM users WHERE email = '${email}'`
 
     try {
 
@@ -122,7 +123,7 @@ const renew = async(req,res = response)=>{
     const uid = req.uid;
     const name = req.name;
     const email = req.email;
-    const sql_search = `SELECT id, name, email, dpi, image, tel  FROM users WHERE id = '${uid}'`
+    const sql_search = `SELECT * FROM users WHERE id = '${uid}'`
     try {
         //Generar Token de autenticacion
         const token = await generateJWT(uid, name,email);
@@ -131,6 +132,11 @@ const renew = async(req,res = response)=>{
 
         await connection.query(sql_search, async (err, result) => {
             if(err) {return res.status(401).json({ok:false, message: err.message})};
+            if(result.length === 0 ){
+                return res.status(400).json({ok:false, message: "El token no es valido"})
+            }
+
+            delete result[0].password;
             res.status(201).json({
                 ok: true,
                 message: 'Nuevo token generado',
@@ -151,15 +157,17 @@ const renew = async(req,res = response)=>{
 
 const update = async(req,res = response)=>{
     const {uid} = req;
-    const sql_search = `SELECT id, name, email, dpi, image, tel  FROM users WHERE id = '${uid}'`
-    const sql_search_email = `SELECT id, name, email, dpi, image, tel  FROM users WHERE email = '${req.body.email}'`
+    const sql_search = `SELECT * FROM users WHERE id = '${uid}'`
+    const sql_search_email = `SELECT * FROM users WHERE email = '${req.body.email}'`
     const sql = `UPDATE users SET ? WHERE id = '${uid}'`;
     try {
         const user = {
             name: req.body.name,
             email: req.body.email,
             dpi: req.body.dpi,
-            tel: req.body.tel
+            tel: req.body.tel,
+            birthday: req.body.birthday,
+            gender: req.body.gender
         }
 
         //Comprobar que el nuevo correo no pertenezca a otro usuario
@@ -179,6 +187,7 @@ const update = async(req,res = response)=>{
                 
                 await connection.query(sql_search, user, async (err, result) => {
                     if(err) {return res.status(401).json({ok:false, message: err.message})};
+                    delete result[0].password;
                     res.status(200).json({
                         ok: true,
                         message: 'Usuario actualizado con exito',
@@ -204,7 +213,7 @@ const update = async(req,res = response)=>{
 
 const upload = async(req,res = response)=>{
     const {uid} = req;
-    const sql_search = `SELECT id, name, email, dpi, image, tel  FROM users WHERE id = '${uid}'`
+    const sql_search = `SELECT * FROM users WHERE id = '${uid}'`
     const sql = `UPDATE users SET ? WHERE id = '${uid}'`;
     try {
         const data = {

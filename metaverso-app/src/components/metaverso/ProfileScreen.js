@@ -27,10 +27,9 @@ export const ProfileScreen = () => {
         tel: user.tel?user.tel:"",
         birthday: user.birthday?user.birthday:"",
         gender: user.gender?user.gender:"",
-        DNI: user.DNI?user.DNI:"",
     });
 
-    const{name, email, dpi, tel, birthday, gender, DNI } = formValues;
+    const{name, email, dpi, tel, birthday, gender } = formValues;
 
     const handleSubmit = (e) => {
         e.preventDefault();
