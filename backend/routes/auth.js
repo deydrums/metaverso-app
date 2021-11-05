@@ -9,7 +9,7 @@ const {Router} = require('express');
 const { check } = require('express-validator');
 const { paramsValidator } = require('../middlewares/params-validator');
 const router = Router();
-const { register, login, renew, update, upload } = require('../controllers/AuthController');
+const { register, login, renew, update, upload, getImage } = require('../controllers/AuthController');
 const { validateJWT } = require('../middlewares/validate-jwt');
 const multipart = require('connect-multiparty');
 const { filedata } = require('../middlewares/filedata');
@@ -70,6 +70,13 @@ router.post(
     ], 
     upload
 );
+
+/********************************Get Imagen ********************/
+
+router.get(
+    '/image/:filename',
+    getImage
+)
 
 
 module.exports = router;

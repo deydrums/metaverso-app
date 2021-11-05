@@ -4,12 +4,12 @@ import { Link, NavLink } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { startLogout } from '../../actions/auth';
 
-const BackUrl = process.env.REACT_APP_BACKEND_URL;
+const BackUrl = process.env.REACT_APP_API_URL;
 
 
 export const AsideScreen = () => {
 
-    const {name, surname, filename} = useSelector(state => state.auth)
+    const {name, surname, image} = useSelector(state => state.auth)
     const dispatch = useDispatch();
 
     const handleLogout = () => {
@@ -28,6 +28,7 @@ export const AsideScreen = () => {
 
 
 
+    console.log(`${BackUrl}/auth/image/${image}`)
     return (
         <aside className="__p-aside">
             <div className="__aside-usrprofile">
@@ -35,9 +36,9 @@ export const AsideScreen = () => {
                 <div className="__aside-userphoto">
                     <div className="rounded-circle" style = {{width: "70px", height: "70px"}}>
                                 {
-                                    filename
+                                    image
                                     ?
-                                        <img src={`${BackUrl}/storage/users/${filename}`} alt="user" className="rounded-circle" style = {{objectFit: "cover", width: "100%", height: "100%"}}></img>
+                                        <img src={`${BackUrl}/auth/image/${image}`} alt="user" className="rounded-circle" style = {{objectFit: "cover", width: "100%", height: "100%"}}></img>
                                     :
                                         <img src='https://i.stack.imgur.com/34AD2.jpg' alt="user" className="rounded-circle" style = {{objectFit: "cover", width: "100%", height: "100%"}}></img>    
                                 }

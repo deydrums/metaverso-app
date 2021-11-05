@@ -257,10 +257,37 @@ const upload = async(req,res = response)=>{
     }
 }
 
+/********************************Get Imagen ********************/
+
+const getImage = async(req,res = response)=>{
+    try {
+        const filename = req.params.filename
+        const pathFile = './uploads/users/'+filename; 
+
+        fs.exists(pathFile, (exists)=>{
+            if(exists){
+                return res.sendFile(path.resolve(pathFile));
+            }else{
+                return res.sendFile(path.resolve('./uploads/default.jpg'));
+            }
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            message: 'Ha ocurrido un error, intenta de nuevo'
+        })
+    }
+
+}
+
+
+
 module.exports = {
     register,
     login,
     renew,
     update,
-    upload
+    upload,
+    getImage
 };
