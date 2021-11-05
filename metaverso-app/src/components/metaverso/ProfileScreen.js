@@ -4,6 +4,7 @@ import { removeError, setError } from '../../actions/ui';
 import { useForm } from '../../hooks/useForm';
 import validator from 'validator';
 import { startUpdate, startUpload } from '../../actions/auth';
+import moment from 'moment';
 
 const BackUrl = process.env.REACT_APP_API_URL;
 
@@ -89,6 +90,7 @@ export const ProfileScreen = () => {
                         <button className="btn btn-success btn-sm m-2" onClick={handlePictureUpload}><i className="fas fa-upload"></i> Subir Imagen </button>
                         <span className="font-weight-bold">{user.name} {user.surname}</span>
                         <span className="text-info">{user.email}</span>
+                        <span className="text-weight font-italic">Unido: {moment(user.created_at).format("DD/MM/YYYY")}</span>
                         <span> </span>
                     </div>
                 </div>
