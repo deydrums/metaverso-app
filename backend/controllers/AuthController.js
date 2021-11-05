@@ -60,7 +60,7 @@ const register = async(req,res = response)=>{
                                         res.status(201).json({
                                             ok: true,
                                             message: 'Registro de usuario exitoso',
-                                            data: result,
+                                            data: result[0],
                                             token
                                         });
                                     }
@@ -85,11 +85,48 @@ const register = async(req,res = response)=>{
 /********************************Login de Usuarios **************/
 
 const login = async(req,res = response)=>{
+    const {email, password} = req.body
+    const sql_search = `SELECT name, email, dpi, image, tel, password  FROM users WHERE email = '${email}'`
+
     try {
-        res.status(201).json({
-            ok: true,
-            message: 'Login correcto'
-        })
+
+        await connection.query(sql_search, async (err, result) => {
+            if(err){
+                res.status(400).json({
+                    ok: false,
+                    message: 'Ha ocurrido un error'
+                });
+            }else{
+                if(result.length == 0){
+                    res.status(404).json({
+                        ok: false,
+                        message: 'El usuario con el correo indicado no existe',
+                    });
+                }else{
+                    
+                    //Confirmar los passwords
+                    const validPassword = bcrypt.compareSync(password, result[0].password);
+                    if(!validPassword){
+                        return res.status(400).json({
+                            ok: false,
+                            message: 'Password incorrecto'
+                        });
+                    };
+
+                    //Generar Token de autenticacion
+                    const token = await generateJWT(result[0].id, result[0].name);
+
+                    res.status(200).json({
+                        ok: true,
+                        data: result[0],
+                        token
+                    });
+            
+
+                }
+    
+            }
+        });
 
     } catch (error) {
         res.status(500).json({
