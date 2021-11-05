@@ -39,7 +39,7 @@ const register = async(req,res = response)=>{
                         if(err) {return res.status(401).json({ok:false, message: err.message})};
                             
                         //Generar Token de autenticacion
-                        const token = await generateJWT(result[0].id, result[0].name);
+                        const token = await generateJWT(result[0].id, result[0].name, result[0].email);
                                 
                         res.status(201).json({
                             ok: true,
@@ -70,42 +70,42 @@ const login = async(req,res = response)=>{
 
     try {
 
+        //Buscar si existe el usuario
+
         await connection.query(sql_search, async (err, result) => {
-            if(err){
-                res.status(400).json({
+
+            if(err) {return res.status(401).json({ok:false, message: err.message})};
+
+            if(result.length == 0){
+                res.status(404).json({
                     ok: false,
-                    message: 'Ha ocurrido un error'
+                    message: 'El usuario con el correo indicado no existe',
                 });
             }else{
-                if(result.length == 0){
-                    res.status(404).json({
+                
+                //Confirmar los passwords
+                const validPassword = bcrypt.compareSync(password, result[0].password);
+                if(!validPassword){
+                    return res.status(400).json({
                         ok: false,
-                        message: 'El usuario con el correo indicado no existe',
+                        message: 'Password incorrecto'
                     });
-                }else{
-                    
-                    //Confirmar los passwords
-                    const validPassword = bcrypt.compareSync(password, result[0].password);
-                    if(!validPassword){
-                        return res.status(400).json({
-                            ok: false,
-                            message: 'Password incorrecto'
-                        });
-                    };
+                };
 
-                    //Generar Token de autenticacion
-                    const token = await generateJWT(result[0].id, result[0].name);
+                //Generar Token de autenticacion
+                const token = await generateJWT(result[0].id, result[0].name, result[0].email);
 
-                    res.status(200).json({
-                        ok: true,
-                        data: result[0],
-                        token
-                    });
-            
+                delete result[0].password;
 
-                }
-    
+                res.status(200).json({
+                    ok: true,
+                    data: result[0],
+                    token
+                });
+        
+
             }
+
         });
 
     } catch (error) {
@@ -120,25 +120,22 @@ const login = async(req,res = response)=>{
 const renew = async(req,res = response)=>{
     const uid = req.uid;
     const name = req.name;
+    const email = req.email;
     const sql_search = `SELECT id, name, email, dpi, image, tel  FROM users WHERE id = '${uid}'`
     try {
         //Generar Token de autenticacion
-        const token = await generateJWT(uid, name);
+        const token = await generateJWT(uid, name,email);
+
+        //Retornar datos del usuario y token
 
         await connection.query(sql_search, async (err, result) => {
-            if(err){
-                res.status(400).json({
-                    ok: false,
-                    message: 'Ha ocurrido un error'
-                });
-            }else{
-                res.status(201).json({
-                    ok: true,
-                    message: 'Nuevo token generado',
-                    data: result[0],
-                    token
-                });
-            }
+            if(err) {return res.status(401).json({ok:false, message: err.message})};
+            res.status(201).json({
+                ok: true,
+                message: 'Nuevo token generado',
+                data: result[0],
+                token
+            });
         });
     } catch (error) {
         res.status(500).json({
@@ -152,8 +149,9 @@ const renew = async(req,res = response)=>{
 /********************************Update  de Usuarios ***********/
 
 const update = async(req,res = response)=>{
-    const {uid, name} = req;
+    const {uid} = req;
     const sql_search = `SELECT id, name, email, dpi, image, tel  FROM users WHERE id = '${uid}'`
+    const sql_search_email = `SELECT id, name, email, dpi, image, tel  FROM users WHERE email = '${req.body.email}'`
     const sql = `UPDATE users SET ? WHERE id = '${uid}'`;
     try {
         const user = {
@@ -163,19 +161,35 @@ const update = async(req,res = response)=>{
             tel: req.body.tel
         }
 
-        await connection.query(sql, user, async (err) => {
+        //Comprobar que el nuevo correo no pertenezca a otro usuario
+
+        await connection.query(sql_search_email, async (err, result) => {
             if(err) {return res.status(401).json({ok:false, message: err.message})};
-            
-            await connection.query(sql_search, user, async (err, result) => {
+            if(result.length > 0 && result[0].id !== uid){
+                return res.status(400).json({ok:false, message: "El email ya se encuentra registrado"})
+            }
+
+            //Si el correo no pertenece a otro usuario, proceder a actualizar
+
+            await connection.query(sql, user, async (err) => {
                 if(err) {return res.status(401).json({ok:false, message: err.message})};
-                res.status(200).json({
-                    ok: true,
-                    message: 'Usuario actualizado con exito',
-                    data: result
-                })
+
+                //Retornar datos actualizados
+                
+                await connection.query(sql_search, user, async (err, result) => {
+                    if(err) {return res.status(401).json({ok:false, message: err.message})};
+                    res.status(200).json({
+                        ok: true,
+                        message: 'Usuario actualizado con exito',
+                        data: result
+                    })
+                });
+
             });
 
         });
+
+
 
     } catch (error) {
         res.status(500).json({

@@ -19,6 +19,7 @@ const validateJWT = (req, res = response, next) => {
 
         req.uid = payload.uid
         req.name = payload.name
+        req.email = payload.email
         
     } catch (error) {
         return res.status(401).json({
