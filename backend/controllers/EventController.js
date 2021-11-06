@@ -44,6 +44,29 @@ const getEvents = async(req,res = response)=>{
     }
 }
 
+
+const getEvent = async(req,res = response)=>{
+
+    const id = req.params['id']; 
+    const sql_event = `SELECT * FROM events WHERE id = ${id}`;
+
+    try {
+
+        await connection.query(sql_event,  (err, event) => {
+            if(err) {return res.status(401).json({ok:false, message: err.message})};
+            if(event.length === 0){return res.status(404).json({ok:false, message:'Evento no encontrado'})}
+            return res.status(200).json({ok:true, data: event[0]});
+        });
+
+        
+    } catch (error) {
+        res.status(500).json({
+            ok: false,
+            message: 'Ha ocurrido un error, intenta de nuevo'
+        })
+    }
+}
 module.exports = {
-    getEvents
+    getEvents,
+    getEvent
 };

@@ -6,7 +6,7 @@
  * */ 
 
 const {Router} = require('express');
-const { getEvents } = require('../controllers/EventController');
+const { getEvents, getEvent } = require('../controllers/EventController');
 const { validateJWT } = require('../middlewares/validate-jwt');
 const router = Router();
  
@@ -14,6 +14,8 @@ const router = Router();
   /********************************Obtener todos los usuarios ***********/
 
   router.get( '/',validateJWT,getEvents);
+
+  router.get( '/:id',validateJWT,getEvent);
 
 
   module.exports = router;
