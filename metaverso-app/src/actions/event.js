@@ -11,7 +11,6 @@ export const startLoadingEvents = () => {
         dispatch(startFetch());
         const resp = await fetchWithToken(`event/`,'','GET');
         const body = await resp.json();
-        console.log(body)
         dispatch(finishFetch());
         if(resp.ok) {
             dispatch(setEvents(body.data));
@@ -23,4 +22,25 @@ export const startLoadingEvents = () => {
 export const setEvents = (events) => ({
     type: types.eventLoadingEvents,
     payload: events
+});
+
+//Set Event ___________________________________________________________________________
+
+export const startLoadingEvent = (id) => {
+    return async(dispatch) => {
+        dispatch(startFetch());
+        const resp = await fetchWithToken(`event/${id}`,'','GET');
+        const body = await resp.json();
+        console.log(body)
+        dispatch(finishFetch());
+        if(resp.ok) {
+            dispatch(setEvent(body.data));
+        }
+    }
+};
+
+
+export const setEvent = (event) => ({
+    type: types.eventLoadingEvent,
+    payload: event
 });

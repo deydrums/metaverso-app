@@ -2,39 +2,17 @@ const { connection } = require("../database/config");
 
 
 const getEvents = async(req,res = response)=>{
-    const sql = `SELECT * FROM events`;
-    var eventos;
-    const sql_participants = `
-        SELECT u.*
+    const sql = `
+        SELECT e.*, u.name AS user
         FROM users u
-        INNER JOIN participants p ON p.user_id = u.id
-        INNER JOIN events e ON p.event_id = e.id
-        WHERE p.event_id = ? GROUP BY u.id;
+        INNER JOIN events e ON e.user_id = u.id;
     `;
-
     try {
         //Obtener todos los eventos registrados
         await connection.query(sql, async (err, events) => {
             if(err) {return res.status(401).json({ok:false, message: err.message})};
-            events.map( async (event, index) => {
-                events[index].participants =   ev(event)
-            })
-            ret(events)
-        })
-
-        const ev = async (event) =>{
-            await connection.query(sql_participants,event.id,  (err, participants) => {
-                if(err) {return res.status(401).json({ok:false, message: err.message})};
-                return participants
-            });
-        }
-
-        const ret = (events) =>{
             return res.status(200).json({ok:true, data: events});
-        }
-
-
-
+        })
 
     } catch (error) {
         res.status(500).json({
@@ -75,6 +53,7 @@ const getEvent = async(req,res = response)=>{
                 event[0].participants = participants;
                 await connection.query(sql_creator,  async (err, user) => {
                     if(err) {return res.status(401).json({ok:false, message: err.message})};
+                    delete user[0].password;
                     event[0].user = user[0];
                     return res.status(200).json({ok:true, data: event[0]});
                 });

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { startLoadingEvents } from '../../../actions/event';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 export const IndexEvents = () => {
 
@@ -47,23 +48,30 @@ export const IndexEvents = () => {
                     <thead>
                         <tr>
                         <th>#</th>
-                        <th>Imagen</th>
-                        <th>Nombre</th>
-                        <th>Correo electrónico</th>
+                        <th>Descripcion</th>
+                        <th>Ubicacion</th>
+                        <th>Usuario</th>                        
+                        <th>Opciones</th>
                         </tr>
                     </thead>
                     <tbody>
                     {
-                        events.map((user, index) =>(
-                            <tr key = {user.id}>
+                        events.map((event, index) =>(
+                            <tr key = {event.id}>
                                 <th scope="row">{index + 1 }</th>
+                                <td>{event.description}</td>
+                                <td>{event.location}</td>
+                                <td>{event.user}</td>
                                 <td>
-                                    <div className="rounded-circle" style = {{width: "100px", height: "100px"}}>
-                                        <img src='https://i.stack.imgur.com/34AD2.jpg' alt="user" className="rounded-circle" style = {{objectFit: "cover", width: "100%", height: "100%"}}></img>
-                                    </div>
+                                <div className="dropdown">
+                                    <button className="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Opciones
+                                    </button>
+                                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><Link className="dropdown-item" to = {`/panel/eventos/${event.id}`}>Ver</Link></li>
+                                    </ul>
+                                </div>
                                 </td>
-                                <td>{user.name}</td>
-                                <td>{user.email}</td>
                             </tr>
                         ))
                     }

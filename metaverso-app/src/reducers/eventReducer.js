@@ -3,7 +3,8 @@
 import { types } from "../types/types"
 
 const initialState = {
-    events:{}
+    events:{},
+    event: {}
 }
 
 export const eventReducer = (state = initialState, action) => {
@@ -19,6 +20,17 @@ export const eventReducer = (state = initialState, action) => {
             return{
                 ...state,
                 events: initialState.events
+            }    
+
+        case types.eventLoadingEvent:
+            return{
+                ...state,
+                event: action.payload
+            }
+        case types.eventUnsetEvent:
+            return{
+                ...state,
+                event: initialState.event
             }    
 
         default:

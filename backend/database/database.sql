@@ -57,13 +57,7 @@ INNER JOIN participants p ON p.user_id = u.id
 INNER JOIN events e ON p.event_id = e.id
 WHERE p.event_id = 1 GROUP BY u.id;
 
-
-SELECT e.*, u.*
-FROM events e
-INNER JOIN users u ON u.id = e.user_id
-WHERE e.id = 1;
-
-SELECT u.*
+SELECT e.*, u.name AS user
 FROM users u
-INNER JOIN events e ON e.user_id = u.id
-WHERE e.id = 1 GROUP BY e.id;
+INNER JOIN events e ON e.user_id = u.id;
+

@@ -16,4 +16,7 @@ export const types = {
 
     eventLoadingEvents: '[event] Loading events',
     eventUnsetEvents: '[event] Unset events',
+
+    eventLoadingEvent: '[event] Loading event',
+    eventUnsetEvent: '[event] Unset event',
 }

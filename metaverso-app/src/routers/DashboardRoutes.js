@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { AsideScreen } from '../components/metaverso/AsideScreen';
+import { EventScreen } from '../components/metaverso/events/EventScreen';
 import { IndexEvents } from '../components/metaverso/events/IndexEvents';
 import { IndexScreen } from '../components/metaverso/IndexScreen';
 import { ProfileScreen } from '../components/metaverso/ProfileScreen';
@@ -34,6 +35,7 @@ export const DashboardRoutes = () => {
                     <Route exact path="/panel/perfil" component={ProfileScreen}/>
                     <Route exact path="/panel/usuarios" component={UsersScreen}/>
                     <Route exact path="/panel/eventos" component={IndexEvents}/>
+                    <Route exact path="/panel/eventos/:id" component={EventScreen}/>
 
                     <Redirect to="/panel"/>
                 </Switch>
