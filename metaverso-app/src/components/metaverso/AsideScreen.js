@@ -73,6 +73,15 @@ export const AsideScreen = () => {
                     </div>
                 </NavLink>
 
+                <NavLink exact to = "/panel/eventos" className="__aside-option mb-2"  activeClassName = "__aside-opcion--active" >
+                    <div className="__aside-option_icon">
+                        <i className="fas fa-calendar"></i>
+                    </div>
+                    <div className="__aside-option_text">
+                        Eventos
+                    </div>
+                </NavLink>
+
             </div>
 
     </aside>
