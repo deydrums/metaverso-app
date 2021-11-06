@@ -13,4 +13,7 @@ export const types = {
 
     userLoadingUsers: '[user] Loading users',
     userUnSetUsers: '[user] UnSet users',
+
+    eventLoadingEvents: '[event] Loading events',
+    eventUnsetEvents: '[event] Unset events',
 }

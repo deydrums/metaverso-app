@@ -30,7 +30,7 @@ const getEvents = async(req,res = response)=>{
         }
 
         const ret = (events) =>{
-            return res.status(200).json({ok:true, message: events});
+            return res.status(200).json({ok:true, data: events});
         }
 
 
