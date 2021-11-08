@@ -31,7 +31,6 @@ export const startLoadingEvent = (id) => {
         dispatch(startFetch());
         const resp = await fetchWithToken(`event/${id}`,'','GET');
         const body = await resp.json();
-        console.log(body)
         dispatch(finishFetch());
         if(resp.ok) {
             dispatch(setEvent(body.data));

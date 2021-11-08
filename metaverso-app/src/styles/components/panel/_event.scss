@@ -1,36 +1,33 @@
-.event-cont{
+.event-content{
     width: 100%;
     height: 10rem;
     display:flex;
     flex-direction: row;
     background-color:$dark-grey;
     border-radius:10px;
+    overflow: hidden;
+
     .event-date{
         width: 25%;
         height:100%;
         display: flex;
         flex-direction: column;
-        .event-day{
-            height: 70%;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items:flex-end;
-            h1{
-                font-size: 6rem;   
-            }
+        align-items: center;
+        justify-content:center;
+        background-color: darken($color: $dark-grey, $amount: 3);
+        h1{
+            font-size: 4rem;
         }
-        .event-month{
-            height: 30%;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: flex-st    art;
+        h2{
+            font-size: 1.5rem;
         }
     }
     .event-cont{
         width: 75%;
         height: 100%;
-        background-color:red;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 }

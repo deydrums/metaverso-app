@@ -23,8 +23,8 @@ id                      int(255) auto_increment not null,
 user_id                 int(255) not null,
 location                text,
 description             text,
-created_at              datetime,
-updated_at              datetime,
+created_at              datetime DEFAULT CURRENT_TIMESTAMP,
+updated_at              datetime DEFAULT CURRENT_TIMESTAMP,
 CONSTRAINT pk_events PRIMARY KEY (id),
 CONSTRAINT fk_events_users FOREIGN KEY(user_id) REFERENCES users(id)
 )ENGINE=InnoDb; 
