@@ -1,0 +1,36 @@
+.event-cont{
+    width: 100%;
+    height: 10rem;
+    display:flex;
+    flex-direction: row;
+    background-color:$dark-grey;
+    border-radius:10px;
+    .event-date{
+        width: 25%;
+        height:100%;
+        display: flex;
+        flex-direction: column;
+        .event-day{
+            height: 70%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items:flex-end;
+            h1{
+                font-size: 6rem;   
+            }
+        }
+        .event-month{
+            height: 30%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-st    art;
+        }
+    }
+    .event-cont{
+        width: 75%;
+        height: 100%;
+        background-color:red;
+    }
+}

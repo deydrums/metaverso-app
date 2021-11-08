@@ -91,7 +91,6 @@ export const ProfileScreen = () => {
                         <span className="font-weight-bold">{user.name} {user.surname}</span>
                         <span className="text-info">{user.email}</span>
                         <span className="text-weight font-italic">Unido: {moment(user.created_at).format("DD/MM/YYYY")}</span>
-                        <span> </span>
                     </div>
                 </div>
                 <div className="col-md-9 border-right">
