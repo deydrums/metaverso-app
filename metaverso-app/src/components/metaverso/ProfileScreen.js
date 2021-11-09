@@ -5,6 +5,7 @@ import { useForm } from '../../hooks/useForm';
 import validator from 'validator';
 import { startUpdate, startUpload } from '../../actions/auth';
 import moment from 'moment';
+import Swal from 'sweetalert2';
 
 const BackUrl = process.env.REACT_APP_API_URL;
 
@@ -63,6 +64,22 @@ export const ProfileScreen = () => {
     const handlePictureUpload = () => {
         document.querySelector('#fileSelector').click();
     }
+
+    
+    const handleDelete = () => {
+        Swal.fire({
+            title: 'Quieres eliminar la cuenta?',
+            showCancelButton: true,
+            text: 'Se eliminaran todos los eventos relacionados a tu cuenta',
+            confirmButtonText: 'Cerrar sesión',
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              Swal.fire('Cuenta eliminada correctamente!', '', 'success')
+            } 
+          })
+    }
+
 
     return (
         <>
@@ -183,7 +200,17 @@ export const ProfileScreen = () => {
                             {
                                 !fetch
                                 ?
-                                <button className="btn btn-primary profile-button" type="submit">Actualizar</button>
+                                <button className="btn btn-primary profile-button m-3" type="submit">Actualizar</button>
+                                :
+                                <button type="button" className="btn btn-secondary profile-button m-3" disabled>
+                                <span className="spinner-grow spinner-grow-sm me-2" role="status" aria-hidden="true"></span>
+                                Espere...
+                                </button>
+                            }
+                                                        {
+                                !fetch
+                                ?
+                                <button className="btn btn-danger profile-button" type="button" onClick={handleDelete}>Eliminar Cuenta</button>
                                 :
                                 <button type="button" className="btn btn-secondary profile-button" disabled>
                                 <span className="spinner-grow spinner-grow-sm me-2" role="status" aria-hidden="true"></span>
