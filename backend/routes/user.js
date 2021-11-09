@@ -6,7 +6,7 @@
  * */ 
 
 const {Router} = require('express');
-const { getUsers } = require('../controllers/UserController');
+const { getUsers, getInfo } = require('../controllers/UserController');
 const { validateJWT } = require('../middlewares/validate-jwt');
 const router = Router();
 
@@ -15,5 +15,6 @@ const router = Router();
 
  router.get( '/',validateJWT,getUsers);
 
+ router.get( '/index',validateJWT,getInfo);
 
  module.exports = router;
