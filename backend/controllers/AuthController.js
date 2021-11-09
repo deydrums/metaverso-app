@@ -293,6 +293,35 @@ const getImage = async(req,res = response)=>{
 
 }
 
+/********************************Update  de Usuarios ***********/
+
+const deleteUser = async(req,res = response)=>{
+    const {uid} = req;
+    const sql_events = `DELETE FROM events WHERE user_id = ${uid}`;
+    const sql_participants = ` DELETE FROM participants WHERE user_id  = ${uid} `
+    const sql_users = `DELETE FROM users WHERE id = ${uid}`
+    try {
+
+        await connection.query(sql_events , async (err) => {
+            if(err) {return res.status(401).json({ok:false, message: err.message})};
+            await connection.query(sql_participants , async (err) => {
+                if(err) {return res.status(401).json({ok:false, message: err.message})};
+                await connection.query(sql_users , async (err) => {
+                    if(err) {return res.status(401).json({ok:false, message: err.message})};
+                    return res.status(200).json({ok:true, message: 'Usuario eliminado exitosamente'});
+                });
+            });
+        });
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            ok: false,
+            message: 'Ha ocurrido un error, intenta de nuevo'
+        })
+    }
+}
+
 
 
 module.exports = {
@@ -301,5 +330,6 @@ module.exports = {
     renew,
     update,
     upload,
-    getImage
+    getImage,
+    deleteUser
 };
