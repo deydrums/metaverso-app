@@ -50,7 +50,7 @@ export const IndexEvents = () => {
                         <th>#</th>
                         <th>Descripcion</th>
                         <th>Ubicacion</th>
-                        <th>Usuario</th>                        
+                        <th>Creador</th>                        
                         <th>Opciones</th>
                         </tr>
                     </thead>

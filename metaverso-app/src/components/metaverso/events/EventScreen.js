@@ -51,19 +51,19 @@ export const EventScreen = ({match})  => {
                     </div>
                 </div>
                 
-                <div class="card box-shadow-sm bg-dark">
-                    <div class="card-header">
+                <div className="card box-shadow-sm bg-dark">
+                    <div className="card-header">
                         <h5 style={{margiBottom: "0px"}}>Participantes</h5>
                     </div>
 
                     {event.participants &&
-                        <div class="card-body">
-                            <div style={{maxWidth: "48rem;"}}>
-                                <div class="form-group row align-items-center">
-                                    <div class="col-md-12">
-                                        <div class="table-responsive mt-3">
-                                            <table class="table table-sm table-dark">
-                                                <thead class="thead-dark">
+                        <div className="card-body">
+                            <div style={{maxWidth: "48rem"}}>
+                                <div className="form-group row align-items-center">
+                                    <div className="col-md-12">
+                                        <div className="table-responsive mt-3">
+                                            <table className="table table-sm table-dark">
+                                                <thead className="thead-dark">
                                                     <tr>
                                                         <th>No,</th>
                                                         <th>Imagen</th>

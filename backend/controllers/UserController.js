@@ -27,7 +27,7 @@ const getUsers = async(req,res = response)=>{
 }
 
 const getInfo = async(req,res = response)=>{
-    const sql_events = `SELECT * FROM events WHERE user_id = 1 ORDER BY created_at DESC`;
+    const sql_events = `SELECT * FROM events WHERE user_id = ${req.uid} ORDER BY created_at DESC`;
     const sql_users = `SELECT * FROM users`;
     try {
         //Obtener todos los usuarios registrados
