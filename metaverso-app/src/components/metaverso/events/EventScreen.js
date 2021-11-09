@@ -12,7 +12,7 @@ export const EventScreen = ({match})  => {
 
     useEffect(() => {
         dispatch(startLoadingEvent(match.params.id))
-    }, [dispatch])
+    }, [dispatch,match.params.id])
 
     const {event} = useSelector(state => state.event)
     const {fetch} = useSelector(state => state.ui);
@@ -74,7 +74,7 @@ export const EventScreen = ({match})  => {
                                                 <tbody>
                                                     {
                                                         event.participants.map((participant, index) =>(
-                                                            <tr key = {event.id}>
+                                                            <tr key = {participant.id}>
                                                                 <th scope="row">{index + 1 }</th>
                                                                 <td>
                                                                     <div className="rounded-circle" style = {{width: "100px", height: "100px"}}>
