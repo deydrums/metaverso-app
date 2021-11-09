@@ -21,10 +21,10 @@ export const RegisterScreen = () => {
 
     //useform hook
     const [formValues, handleInputChange] = useForm({
-        name: 'David',
-        email: 'dagarcia100@gmail.com',
-        password: '12345678',
-        password_confirm: '12345678'
+        name: '',
+        email: '',
+        password: '',
+        password_confirm: ''
     });
 
     const {name, email, password, password_confirm} = formValues;
