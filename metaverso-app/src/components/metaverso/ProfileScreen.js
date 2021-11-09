@@ -71,11 +71,11 @@ export const ProfileScreen = () => {
             title: 'Quieres eliminar la cuenta?',
             showCancelButton: true,
             text: 'Se eliminaran todos los eventos relacionados a tu cuenta',
-            confirmButtonText: 'Cerrar sesión',
+            confirmButtonText: 'Eliminar',
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-                dispatch(startDelete());
+                dispatch(startDelete(formValues));
             } 
           })
     }

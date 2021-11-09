@@ -4,6 +4,8 @@ import { types } from "../types/types";
 import { fetchWithoutToken, fetchWithToken, fileUpload } from "../helpers/fetch";
 import { finishFetch, startFetch } from "./ui";
 import Swal from 'sweetalert2';
+import { UnsetEvent, UnsetEvents } from "./event";
+import { unsetUsers } from "./user";
 
 
 //login ___________________________________________________________________________
@@ -74,6 +76,9 @@ export const startLogout = () => {
     return async(dispatch) => {
         localStorage.clear();
         dispatch(logout());
+        dispatch(UnsetEvents());
+        dispatch(UnsetEvent());
+        dispatch(unsetUsers());
     }
 };
 
@@ -132,13 +137,17 @@ export const startUpload = (file) => {
 
 //delete user ________________________________________________________________________
 
-export const startDelete = () => {
+export const startDelete = (id) => {
     return async(dispatch) => {
         dispatch(startFetch());
-        const resp = await fetchWithToken('auth/delete');
+        const resp = await fetchWithToken('auth/delete',id,'DELETE');
         const body = await resp.json();
         dispatch(finishFetch());
         if(resp.ok) {
+            dispatch(startLogout());
+            dispatch(UnsetEvents());
+            dispatch(UnsetEvent());
+            dispatch(unsetUsers());
             Swal.fire('Hecho',body.message,'success');
         }else{
             Swal.fire('Error',body.message,'error');

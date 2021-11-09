@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { startLoadingEvent } from '../../../actions/event';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 
 
 const BackUrl = process.env.REACT_APP_API_URL;
@@ -19,9 +20,13 @@ export const EventScreen = ({match})  => {
 
     return (
         <>
-            <div className="border-bottom mt-2">
-                <h1 className="mt-2 mt-md-4 mb-3 ">Evento</h1>
+        <div className="border-bottom mt-2 mb-5">
+            <h1 className="mt-2 mt-md-4 mb-3 ">Evento</h1>
+            <div className="d-flex flex-wrap flex-md-nowrap justify-content-between">
+                <p></p>
+                <p className="font-size-sm font-weight-medium pl-md-4"><Link to="/panel/eventos" className="text-nowrap text-info" >Volver<i className="cxi-angle-right font-size-base align-middle ml-1"></i></Link></p>
             </div>
+        </div>
             {
             fetch
             ?

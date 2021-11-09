@@ -38,3 +38,8 @@ export const setUsers = (users) => ({
     type: types.userLoadingUsers,
     payload: users
 });
+
+
+export const unsetUsers = () => ({
+    type: types.userUnSetUsers
+})

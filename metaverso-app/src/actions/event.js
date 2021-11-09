@@ -43,3 +43,11 @@ export const setEvent = (event) => ({
     type: types.eventLoadingEvent,
     payload: event
 });
+
+export const UnsetEvent = () => ({
+    type: types.eventUnsetEvent
+});
+
+export const UnsetEvents = () => ({
+    type: types.eventUnsetEvents
+});
