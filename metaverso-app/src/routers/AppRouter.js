@@ -8,6 +8,7 @@ import {
     Redirect
   } from "react-router-dom";
 import { startChecking } from "../actions/auth";
+import { LoadingScreen } from "../components/ui/LoadingScreen";
 import { AuthRouter } from "./AuthRouter";
 import { DashboardRoutes } from "./DashboardRoutes";
 import { PrivateRoute } from "./PrivateRoute";
@@ -23,7 +24,7 @@ export const AppRouter = () => {
     }, [dispatch])
 
     if(checking) {
-        return(<h1>Cargando...</h1>)
+        return(<LoadingScreen/>)
     }
 
     return (
