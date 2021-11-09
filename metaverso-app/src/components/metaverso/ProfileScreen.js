@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeError, setError } from '../../actions/ui';
 import { useForm } from '../../hooks/useForm';
 import validator from 'validator';
-import { startUpdate, startUpload } from '../../actions/auth';
+import { startDelete, startUpdate, startUpload } from '../../actions/auth';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 
@@ -75,7 +75,7 @@ export const ProfileScreen = () => {
           }).then((result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-              Swal.fire('Cuenta eliminada correctamente!', '', 'success')
+                dispatch(startDelete());
             } 
           })
     }

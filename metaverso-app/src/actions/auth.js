@@ -128,3 +128,20 @@ export const startUpload = (file) => {
 
     }
 }
+
+
+//delete user ________________________________________________________________________
+
+export const startDelete = () => {
+    return async(dispatch) => {
+        dispatch(startFetch());
+        const resp = await fetchWithToken('auth/delete');
+        const body = await resp.json();
+        dispatch(finishFetch());
+        if(resp.ok) {
+            Swal.fire('Hecho',body.message,'success');
+        }else{
+            Swal.fire('Error',body.message,'error');
+        }
+    }
+}

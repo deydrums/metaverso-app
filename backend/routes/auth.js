@@ -80,7 +80,7 @@ router.get(
 
 /********************************Eliminar  de Usuario ***********/
 
-router.delete('/delete',validateJWT,deleteUser);
+router.get('/delete',[validateJWT],deleteUser);
 
 
 
